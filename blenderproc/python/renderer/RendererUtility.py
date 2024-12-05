@@ -10,7 +10,7 @@ import platform
 import time
 
 import mathutils
-import bpy
+import bbpypy
 import numpy as np
 from rich.console import Console
 from rich.progress import Progress, TextColumn, BarColumn, TimeRemainingColumn
@@ -507,7 +507,13 @@ def enable_segmentation_output(map_by: Union[str, List[str]] = "category_id",
     # Feed the output through 'Combine Color' node, to create 3 channel RGB grayscale image as a lot of
     # EXR readers don't support single float channel EXR files and Blender writes depth as a single
     # channel since version 4.1.1 by default
-    combine_color = tree.nodes.new("CompositorNodeCombineColor")
+    combine_color = None
+    for node in tree.nodes:
+        if isinstance(node, bpy.types.CompositorNodeCombineRGB):
+            combine_color = node
+            break
+    if not combine_color:
+        combine_color = tree.nodes.new("CompositorNodeCombineColor")
     combine_color.mode = "HSV"
     links.new(render_layer_node.outputs["IndexOB"], combine_color.inputs[2])
     
