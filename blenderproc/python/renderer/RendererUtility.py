@@ -481,7 +481,16 @@ def enable_segmentation_output(map_by: Union[str, List[str]] = "category_id",
     if output_dir is None:
         output_dir = Utility.get_temporary_directory()
 
-    output_node = tree.nodes.new('CompositorNodeOutputFile')
+    # Search for an existing CompositorNodeOutputFile node
+    output_node = None
+    for node in tree.nodes:
+        if isinstance(node, bpy.types.CompositorNodeOutputFile):
+            output_node = node
+            break
+
+    # If no existing node is found, create a new one
+    if not output_node:
+        output_node = tree.nodes.new('CompositorNodeOutputFile')
     output_node.base_path = output_dir
     output_node.format.file_format = "OPEN_EXR"
     output_node.file_slots.values()[0].path = file_prefix
