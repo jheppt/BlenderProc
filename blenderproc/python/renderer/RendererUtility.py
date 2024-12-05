@@ -10,7 +10,7 @@ import platform
 import time
 
 import mathutils
-import bbpypy
+import bpy
 import numpy as np
 from rich.console import Console
 from rich.progress import Progress, TextColumn, BarColumn, TimeRemainingColumn
