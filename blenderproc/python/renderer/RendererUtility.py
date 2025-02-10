@@ -509,7 +509,7 @@ def enable_segmentation_output(map_by: Union[str, List[str]] = "category_id",
     # channel since version 4.1.1 by default
     combine_color = None
     for node in tree.nodes:
-        if isinstance(node, bpy.types.CompositorNodeCombineRGB):
+        if isinstance(node, bpy.types.CompositorNodeCombineColor):
             combine_color = node
             break
     if not combine_color:
