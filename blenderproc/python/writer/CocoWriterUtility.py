@@ -19,6 +19,7 @@ def write_coco_annotations(output_dir: str, instance_segmaps: List[np.ndarray],
                            colors: List[np.ndarray], color_file_format: str = "PNG",
                            mask_encoding_format: str = "rle", supercategory: str = "coco_annotations",
                            append_to_existing_output: bool = True,
+                           coco_annotations_file_name: str = "coco_annotations.json",
                            jpg_quality: int = 95, label_mapping: Optional[LabelIdMapping] = None,
                            file_prefix: str = "", indent: Optional[Union[int, str]] = None):
     """ Writes coco annotations in the following steps:
@@ -39,6 +40,7 @@ def write_coco_annotations(output_dir: str, instance_segmaps: List[np.ndarray],
     :param append_to_existing_output: If true and if there is already a coco_annotations.json file in the output
                                       directory, the new coco annotations will be appended to the existing file.
                                       Also, the rgb images will be named such that there are no collisions.
+    :param coco_annotations_file_name: The name of the coco annotations file
     :param jpg_quality: The desired quality level of the jpg encoding
     :param label_mapping: The label mapping which should be used to label the categories based on their ids.
                           If None, is given then the `name` field in the csv files is used or - if not existing -
@@ -58,7 +60,7 @@ def write_coco_annotations(output_dir: str, instance_segmaps: List[np.ndarray],
     # Create output directory
     os.makedirs(os.path.join(output_dir, 'images'), exist_ok=True)
 
-    coco_annotations_path = os.path.join(output_dir, "coco_annotations.json")
+    coco_annotations_path = os.path.join(output_dir, coco_annotations_file_name)
     # Calculate image numbering offset, if append_to_existing_output is activated and coco data exists
     if append_to_existing_output and os.path.exists(coco_annotations_path):
         with open(coco_annotations_path, 'r', encoding="utf-8") as fp:
@@ -104,6 +106,7 @@ def write_coco_annotations(output_dir: str, instance_segmaps: List[np.ndarray],
     print("Writing coco annotations to " + coco_annotations_path)
     with open(coco_annotations_path, 'w', encoding="utf-8") as fp:
         json.dump(coco_output, fp, indent=indent)
+
 
 
 def binary_mask_to_rle(binary_mask: np.ndarray) -> Dict[str, List[int]]:

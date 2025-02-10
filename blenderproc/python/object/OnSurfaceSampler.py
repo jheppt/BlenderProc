@@ -66,7 +66,7 @@ def sample_poses_on_surface(objects_to_sample: List[MeshObject], surface: MeshOb
                 continue
 
             if not _OnSurfaceSampler.check_above_surface(obj, surface, up_direction, check_all_bb_corners_over_surface):
-                print("Not above surface, retrying!")
+                print(f"Not above surface, retrying! {obj.get_location()}")
                 continue
 
             _OnSurfaceSampler.drop(obj, up_direction, surface_height)
