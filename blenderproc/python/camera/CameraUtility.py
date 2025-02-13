@@ -135,19 +135,20 @@ def rotation_from_forward_vec(forward_vec: Union[np.ndarray, Vector], up_axis: s
     return np.array(rotation_matrix)
 
 
-def set_resolution(image_width: int = None, image_height: int = None):
+def set_resolution(image_width: int = None, image_height: int = None, percentage: int = 100):
     """ Sets the camera resolution.
 
     :param image_width: The image width in pixels.
     :param image_height: The image height in pixels.
+    :param percentage: The percentage of the resolution to set.
     """
-    set_intrinsics_from_blender_params(None, image_width, image_height)
+    set_intrinsics_from_blender_params(None, image_width=image_width, image_height=image_height, percentage=percentage)
 
 
 def set_intrinsics_from_blender_params(lens: float = None, image_width: int = None, image_height: int = None,
                                        clip_start: float = None, clip_end: float = None,
                                        pixel_aspect_x: float = None, pixel_aspect_y: float = None, shift_x: int = None,
-                                       shift_y: int = None, lens_unit: str = None):
+                                       shift_y: int = None, lens_unit: str = None, percentage: int = None):
     """ Sets the camera intrinsics using blenders represenation.
 
     :param lens: Either the focal length in millimeters or the FOV in radians, depending on the given lens_unit.
@@ -159,6 +160,7 @@ def set_intrinsics_from_blender_params(lens: float = None, image_width: int = No
     :param pixel_aspect_y: The pixel aspect ratio along y.
     :param shift_x: The shift in x direction.
     :param shift_y: The shift in y direction.
+    :param percentage: The percentage of the resolution to set.
     :param lens_unit: Either FOV or MILLIMETERS depending on whether the lens is defined as focal length in
                       millimeters or as FOV in radians.
     """
@@ -185,6 +187,10 @@ def set_intrinsics_from_blender_params(lens: float = None, image_width: int = No
         bpy.context.scene.render.resolution_x = image_width
     if image_height is not None:
         bpy.context.scene.render.resolution_y = image_height
+
+    # Set percentage
+    if percentage is not None:
+        bpy.context.scene.render.resolution_percentage = percentage
 
     # Set clipping
     if clip_start is not None:
