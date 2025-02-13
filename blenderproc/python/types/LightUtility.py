@@ -57,6 +57,16 @@ class Light(Entity):
         self.blender_obj.data.shadow_soft_size = radius
         Utility.insert_keyframe(self.blender_obj.data, "shadow_soft_size", frame)
 
+    def set_size(self, size: float, frame: Optional[int] = None):
+        """ Sets the size of the light.
+
+        :param size: The size of the light.
+        :param frame: The frame number which the value should be set to. If None is given, the current
+                      frame number is used.
+        """
+        self.blender_obj.data.size = size
+        Utility.insert_keyframe(self.blender_obj.data, "size", frame)
+
     def set_color(self, color: Union[list, Color], frame: Optional[int] = None):
         """ Sets the color of the light.
 
